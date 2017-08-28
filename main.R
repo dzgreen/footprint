@@ -22,11 +22,14 @@
   # 3a) Map
 
 
+
+lapply(pack, require, character.only=T)
+
 #### Set working directory ####
 path_to_data <- "/home/dominik/Dropbox/Kandidat/Managing_big/datagroup_exam/"
+#path_to_data <- "/Users/louisedagmarmadsen/Dropbox/Uni-noter/Kandidat/Sommerskole 2017/Managing and Analysing Cross Sectional and Spatial Data in Social Science/Exam"
 # ""
-# ""
-
+setwd(path_to_data)
 
 #### Read data ####
 countries <- read.csv(file = "countries.csv")
@@ -44,4 +47,18 @@ countries$GDP.per.Capita <- gsub(x = countries$GDP.per.Capita, pattern = "[$]", 
 countries$GDP.per.Capita <- gsub(x = countries$GDP.per.Capita, pattern = "[,]", replacement = "")
 countries$GDP.per.Capita <- as.numeric(countries$GDP.per.Capita)
 
+
+#### 2. Relationship between income and ecological footprint ####
+# We are also creating the 
+
+# Simple scatterplots #
+
+
+plot(countries$GDP.per.Capita, countries$Total.Ecological.Footprint, main = "Relationship between income and total ecological footprint",
+     xlab = "Income", ylab = "Total ecological footprint", pch=19)
+
+cor(countries$GDP.per.Capita, countries$HDI, use = "complete.obs", method="kendall")
+
+plot(countries$HDI, countries$Total.Ecological.Footprint, main = "Relationship between income and total ecological footprint",
+     xlab = "Income", ylab = "Total ecological footprint", pch=19)
 
