@@ -49,16 +49,23 @@ countries$GDP.per.Capita <- as.numeric(countries$GDP.per.Capita)
 
 
 #### 2. Relationship between income and ecological footprint ####
-# We are also creating the 
-
-# Simple scatterplots #
-
-
-plot(countries$GDP.per.Capita, countries$Total.Ecological.Footprint, main = "Relationship between income and total ecological footprint",
-     xlab = "Income", ylab = "Total ecological footprint", pch=19)
+# We are also looking at the relationship between HDI and ecological footprint.
+# As income (GDP pr. capita) is part of HDI, they are highly correlated. Still insteresting to see, if there's
+# any difference.
 
 cor(countries$GDP.per.Capita, countries$HDI, use = "complete.obs", method="kendall")
+# As expected correlation is high: 0.8075072
+
+### Simple scatterplots ###
+plot(countries$GDP.per.Capita, countries$Total.Ecological.Footprint, main = "Relationship between income and total ecological footprint",
+     xlab = "Income", ylab = "Total ecological footprint", pch=19)
+abline(lm(countries$Total.Ecological.Footprint~countries$GDP.per.Capita), col="red")
 
 plot(countries$HDI, countries$Total.Ecological.Footprint, main = "Relationship between income and total ecological footprint",
      xlab = "Income", ylab = "Total ecological footprint", pch=19)
+abline(lm(countries$Total.Ecological.Footprint~countries$HDI), col="red")
+# What's up with the intervals/units of income?
+
+### Way cooler scatterplots to come :) ###
+
 
