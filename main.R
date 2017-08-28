@@ -21,7 +21,11 @@
   # 3 ) What countries have an ecological debt and what countries have surplus? (Dominik)
   # 3a) Map
 
+#### Reading packages ####
 
+# Insert packages that you use - and potentially delete the ones we don't use
+pack<-c("car","sandwich","lmtest","RColorBrewer","mgcv","foreign","xtable"
+        ,"AER","stargazer", "MASS", "ggplot2")
 
 lapply(pack, require, character.only=T)
 
