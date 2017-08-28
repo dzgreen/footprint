@@ -1,3 +1,9 @@
+#### Workflow ####
+# 1) PULL others changes from remote to local
+# 2) start working
+# 3) COMMIT frequently, write meaningfull COMMIT messages 
+# 4) When finished working, PULL others changes again, make a final COMMIT and PUSH your work to remote.
+
 #### Outline ####
 # Set working directory and read in data (Dominik)
 # Data inspection (Dominik)
