@@ -19,8 +19,8 @@ str(countries) # variable and their mode.
 countries$Country <- as.character(countries$Country)
 library("stringr")
 countries$GDP.per.Capita <- as.character(countries$GDP.per.Capita)
-gsub(x = countries$GDP.per.Capita[1], pattern = "$", replacement = "")
-gsub(x = "mig", pattern = "ig", replacement = "y")
+noget <- gsub(x = countries$GDP.per.Capita[1], pattern = "$", replacement = "")
+gsub(x = noget, pattern = "$", replacement = "")
 ?gsub
 
 
