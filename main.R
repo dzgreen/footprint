@@ -4,6 +4,7 @@ path_to_data <- "/home/dominik/Dropbox/Kandidat/Managing_big/datagroup_exam/"
 # ""
 # ""
 
+# Added thius line to test commit
 
 #### Read data ####
 countries <- read.csv(file = "countries.csv")
