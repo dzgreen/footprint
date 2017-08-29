@@ -55,18 +55,6 @@ countries[rowSums(is.na(countries)) > 0,c(1,3)] # Return countries with NA's and
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 #### 2. Relationship between income and ecological footprint ####
 # We are also looking at the relationship between HDI and ecological footprint.
 # As income (GDP pr. capita) is part of HDI, they are highly correlated. Still insteresting to see, if there's
