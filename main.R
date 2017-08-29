@@ -6,12 +6,11 @@
 
 #### Outline ####
 # Set working directory and read in data (Dominik)
-# Data inspection (Dominik)
+# Data inspection and cleaning (Dominik)
   # types of variables 
   # NA's
   # Outliers
   # Scatterplots
-# Data cleaning (Dominik)
 # Data visualisation (All)
   # 1 ) What is the distribution of the ecological footprint in the world? (Gary)
   # 1a) Histograms 
@@ -22,26 +21,39 @@
   # 3a) Map
 
 
-#### Set working directory ####
+#### Set working directory and read data ####
 path_to_data <- "/home/dominik/Dropbox/Kandidat/Managing_big/datagroup_exam/"
 # ""
 # ""
-
-
-#### Read data ####
 countries <- read.csv(file = "countries.csv")
 
 
-#### Data inspection ####
+#### Data inspection and cleaning ####
 dim(countries) # rows and columns
 str(countries) # variable and their mode.
 
-
-#### Changing type of some variables ####
-countries$Country <- as.character(countries$Country)
-countries$GDP.per.Capita <- as.character(countries$GDP.per.Capita)
-countries$GDP.per.Capita <- gsub(x = countries$GDP.per.Capita, pattern = "[$]", replacement = "")
-countries$GDP.per.Capita <- gsub(x = countries$GDP.per.Capita, pattern = "[,]", replacement = "")
+# Change modes and remove a $ sign
+countries$Country <- as.character(countries$Country) # Change Country from factor to numeric
+countries$GDP.per.Capita <- as.character(countries$GDP.per.Capita) 
+countries$GDP.per.Capita <- gsub(x = countries$GDP.per.Capita, pattern = "$", replacement = "", fixed = T) # fixed = T makes gsub understand pattern as a string insted of regex
+countries$GDP.per.Capita <- gsub(x = countries$GDP.per.Capita, pattern = ",", replacement = "", fixed = T)
 countries$GDP.per.Capita <- as.numeric(countries$GDP.per.Capita)
+
+# Look for NA's
+colSums(sapply(countries, is.na)) # Number of NA's per variable
+countries[rowSums(is.na(countries)) > 0,c(1,3)] # Return countries with NA's and their population
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
