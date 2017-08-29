@@ -91,7 +91,7 @@ countries$Region1[countries$Country == "Norway"] <- "Western Europe"
 countries$Region1[countries$Country == "Switzerland"] <- "Western Europe"
 
 
-#### HDI scatterplots by regions  ####
+#### HDI scatterplots  ####
 
 # Total Ecological Footprint ~ HDI, colour coded by regions
 ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint, colour = Region1)) + geom_point() + 
