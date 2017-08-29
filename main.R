@@ -10,7 +10,6 @@
   # types of variables
   # NA's
   # Outliers
-  # Scatterplots
 # Data visualisation (All)
   # 1 ) What is the distribution of the ecological footprint in the world? (Gary)
   # 1a) Histograms
@@ -29,7 +28,7 @@ pack<-c("car","sandwich","lmtest","RColorBrewer","mgcv","foreign","xtable"
 lapply(pack, require, character.only=T)
 
 #### Set working directory and read data ####
-path_to_data <- "/home/dominik/Dropbox/Kandidat/Managing_big/datagroup_exam/"
+path_to_data <- "/home/dominik/Dropbox/Kandidat/Managing_big/footprint"
 #path_to_data <- "/Users/louisedagmarmadsen/Dropbox/Uni-noter/Kandidat/Sommerskole 2017/Managing and Analysing Cross Sectional and Spatial Data in Social Science/Exam"
 # ""
 setwd(path_to_data)
@@ -51,8 +50,12 @@ countries$GDP.per.Capita <- as.numeric(countries$GDP.per.Capita)
 
 # Look for NA's
 colSums(sapply(countries, is.na)) # Number of NA's per variable
-countries[rowSums(is.na(countries)) > 0,c(1,3)] # Return countries with NA's and their population
+countries[rowSums(is.na(countries)) > 0,c(1,3)] # Return countries with NA's and their population. Few big countries lack data (Cambodia, Côte d'Ivoire, Finland, Korea, Norway, Somalia, Syrian Arab Republic) )
+# When running different function consider using na.rm = T. 
 
+# Look for outliers
+library(GGally)
+ggpairs(countries[,3:11])  # showing scatterplots
 
 
 #### 2. Relationship between income and ecological footprint ####
@@ -62,6 +65,8 @@ countries[rowSums(is.na(countries)) > 0,c(1,3)] # Return countries with NA's and
 
 cor(countries$GDP.per.Capita, countries$HDI, use = "complete.obs", method="kendall")
 # As expected correlation is high: 0.8075072
+
+
 
 ### Simple scatterplots ###
 plot(countries$GDP.per.Capita, countries$Total.Ecological.Footprint, main = "Relationship between income and total ecological footprint",
@@ -74,3 +79,13 @@ abline(lm(countries$Total.Ecological.Footprint~countries$HDI), col="red")
 # What's up with the intervals/units of income?
 
 ### Way cooler scatterplots to come :) ###
+
+#### What countries have an ecological debt and what countries have surplus? ####
+library(rworldmap)
+mapDevice('x11')
+dfmap <- countries[,c(1,18)]
+def_res_map <- joinCountryData2Map(dF = dfmap, joinCode = "NAME", nameJoinColumn = "Country", nameCountryColumn = "Country")
+library(RColorBrewer) # Add better colors
+colourPalette <- brewer.pal(7,'RdYlGn')
+mapCountryData(def_res_map, nameColumnToPlot = "Biocapacity.Deficit.or.Reserve", colourPalette=colourPalette)
+
