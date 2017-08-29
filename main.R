@@ -54,11 +54,15 @@ countries[rowSums(is.na(countries)) > 0,c(1,3)] # Return countries with NA's and
 # When running different function consider using na.rm = T. 
 
 # Look for outliers
+#install.packages("GGally")
 library(GGally)
 ggpairs(countries[,3:11])  # showing scatterplots
 
 
+############################################################################################
 #### 2. Relationship between income and ecological footprint ####
+############################################################################################
+
 # We are also looking at the relationship between HDI and ecological footprint.
 # As income (GDP pr. capita) is part of HDI, they are highly correlated. Still insteresting to see, if there's
 # any difference.
@@ -66,21 +70,82 @@ ggpairs(countries[,3:11])  # showing scatterplots
 cor(countries$GDP.per.Capita, countries$HDI, use = "complete.obs", method="kendall")
 # As expected correlation is high: 0.8075072
 
-
-
-### Simple scatterplots ###
+#### Simple scatterplots ####
 plot(countries$GDP.per.Capita, countries$Total.Ecological.Footprint, main = "Relationship between income and total ecological footprint",
      xlab = "Income", ylab = "Total ecological footprint", pch=19)
 abline(lm(countries$Total.Ecological.Footprint~countries$GDP.per.Capita), col="red")
 
-plot(countries$HDI, countries$Total.Ecological.Footprint, main = "Relationship between income and total ecological footprint",
-     xlab = "Income", ylab = "Total ecological footprint", pch=19)
+plot(countries$HDI, countries$Total.Ecological.Footprint, main = "Relationship between Human Development Index and total ecological footprint",
+     xlab = "HDI", ylab = "Total ecological footprint", pch=19)
 abline(lm(countries$Total.Ecological.Footprint~countries$HDI), col="red")
-# What's up with the intervals/units of income?
 
-### Way cooler scatterplots to come :) ###
 
-#### What countries have an ecological debt and what countries have surplus? ####
+#### Changing regions: Eastern/Western Europe ####
+
+# Character version of Region
+countries$Region1 <- as.character(countries$Region) 
+
+countries$Region1[countries$Region1 == "Northern/Eastern Europe"] <- "Eastern Europe"
+countries$Region1[countries$Region1 == "European Union"] <- "Western Europe"
+countries$Region1[countries$Country == "Norway"] <- "Western Europe"
+countries$Region1[countries$Country == "Switzerland"] <- "Western Europe"
+
+
+#### HDI scatterplots by regions  ####
+
+# Total Ecological Footprint ~ HDI, colour coded by regions
+ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint, colour = Region1)) + geom_point() + 
+  xlab ("HDI") + ylab ("Total Ecological Footprint (gha)") + ggtitle ("Relationship between Human Development Index and total ecological footprint")
+
+ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint, colour = Region1)) + geom_point() + 
+  labs(title = "Relationship between Human Development Index and Total Ecological Footprint", x ="HDI", y = "Total Ecological Footprint (gha)", colour = "Region")
+
+# Total Ecological Footprint ~ HDI, different plots for each region
+ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint)) + geom_point() + facet_grid(~Region1)
+
+# Total Ecological Footprint ~ HDI, colour coded by regions - line for each region
+ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint, colour = Region1)) + geom_point() +   
+  stat_smooth(method = 'nls', formula = 'y~exp(a*x+b)',
+              method.args = list(start=c(a=0.1, b=0)), se=FALSE) + 
+  labs(title = "Relationship between Human Development Index and Total Ecological Footprint", 
+       x ="HDI", y = "Total Ecological Footprint (gha)", colour = "Region")
+
+
+# Plot which makes one non-linear line for countries  
+ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint)) + 
+  geom_point() +   stat_smooth(method = 'nls', formula = 'y~exp(a*x+b)',
+                               method.args = list(start=c(a=0.1, b=0)), se=FALSE) +
+  labs(title = "Relationship between Human Development Index and Total Ecological Footprint", x ="HDI", y = "Total Ecological Footprint (gha)")
+
+
+#### Income scatterplots ####
+
+### Creating income intervals ###
+# Based on WB distinctions:  
+# Low income (L) 1005
+# Lower middle income (LM) 1006-3955
+# Upper middle income (UM) 3956-12235
+# High income (H) > 12235
+
+countries$income.intervals[countries$GDP.per.Capita <= 1005] <- "Low income"
+countries$income.intervals[countries$GDP.per.Capita > 1006 & countries$GDP.per.Capita <= 3955] <- "Lower middle income"
+countries$income.intervals[countries$GDP.per.Capita > 3956 & countries$GDP.per.Capita <= 12235] <- "Upper middle income"
+countries$income.intervals[countries$GDP.per.Capita > 12235] <- "High income"
+
+# Total Ecological Footprint ~ Income, colour coded by regions
+ggplot(countries, aes(x = GDP.per.Capita, y = Total.Ecological.Footprint, colour = Region1)) + geom_point() + 
+  xlab ("GDP per Capita ($)") + ylab ("Total Ecological Footprint (gha)") + ggtitle ("Relationship between income and total ecological footprint")
+
+# Total Ecological Footprint ~ Income, colour coded by income interval # <- pretty obvious when it's run...
+ggplot(countries, aes(x = GDP.per.Capita, y = Total.Ecological.Footprint, colour = income.intervals)) + geom_point() + 
+  xlab ("GDP per Capita ($)") + ylab ("Total Ecological Footprint (gha)") + ggtitle ("Relationship between income and total ecological footprint")
+
+#######################################################################################
+
+#######################################################################################
+#### 3. What countries have an ecological debt and what countries have surplus? ####
+
+#install.packages("rworldmap")
 library(rworldmap)
 mapDevice('x11')
 dfmap <- countries[,c(1,18)]
