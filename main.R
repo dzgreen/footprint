@@ -64,7 +64,7 @@ ggpairs(countries[,3:11])  # showing scatterplots
 #### 1 ) What is the distribution of the ecological footprint in the world? (Gary) ####
 
 #making a histogram for footprint 
-#adding a vertical line showing global per capita biocap would be nice 
+#adding a vertical line showing global per capita biocap and/or average of footprint would be nice 
 ggplot(data=countries, aes(x=Total.Ecological.Footprint))+
   geom_histogram( fill = "#E69F00", color = "dodgerblue2") + #colour of the bins' body and the lining
   labs(x="Total Ecological Footprint per Capita", y = "Number of countries") + #labelling x and y axis
