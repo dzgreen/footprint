@@ -72,6 +72,18 @@ ggplot(data=countries, aes(x=Total.Ecological.Footprint))+
   ggtitle("Total Ecological Footprint per Capita in the different countries") + # adding title
   theme(plot.title = element_text(lineheight=.8, face="bold")) # setting title format 
 
+# 1.1 Do countries in the same bin have the same the effect on the global level overshooting?
+
+#making a log scale histogram for the distribution of countries wrt their population
+
+ggplot(data=countries, aes(x=Population..millions.))+
+  geom_histogram( fill = "#E69F00", color = "dodgerblue2") + 
+  scale_x_continuous(trans="log10",breaks = c(1,5,10,50,100,500,1000,1500)) +
+  labs(x="Population (Millions) - Log scale ", y = "Number of countries") + 
+  stat_bin(aes(y=..count.., label=..count..), geom="text", vjust=-0.5)+
+  ggtitle("Countries by population") + 
+  theme(plot.title = element_text(lineheight=.8, face="bold"))
+
 
 
 ############################################################################################
