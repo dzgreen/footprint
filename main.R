@@ -98,6 +98,26 @@ ggplot(data=countries,aes(x =  sort(Total.Ecological.Footprint), y =  cumsum(Pop
   geom_text(aes(label=ifelse(Population..millions.>200,as.character(Country),'')),
             hjust=-0.3,vjust=0, size=2.5)
 
+#1.2 What drives TEFP per capita?
+
+#plotting the relationship of TEFP and CFP
+
+ggplot(data=countries,aes(x =  Total.Ecological.Footprint, y =  Carbon.Footprint))+
+  geom_point(aes(colour=Region))+
+  labs(x="Total Ecological Footprint per Capita", y = "Carbon Footprint per Capita") +
+  ggtitle("The relationship of Total Ecological Footprint per Capita and Carbon Footprint per Capita") + 
+  theme(plot.title = element_text(lineheight=.8, face="bold"))+
+  geom_text(aes(label=ifelse(Carbon.Footprint>5 | (Total.Ecological.Footprint>5 & (Carbon.Footprint/Total.Ecological.Footprint<0.6)),as.character(Country),'')),
+            hjust=-0.3,vjust=0, size=2.5)+
+  geom_smooth(method='lm',formula=y~x)+
+  ggsave(filename="carbonplot.pdf",width=8,height=4)
+
+#plotting the relationship of TEFP and FFP
+ggplot(data=countries,aes(x =  Total.Ecological.Footprint, y =  Fish.Footprint))+
+  geom_point(aes(colour=Region))+ ylim(0, 15)
+
+
+
 ############################################################################################
 #### 2. Relationship between income and ecological footprint ####
 ############################################################################################
