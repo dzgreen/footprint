@@ -30,7 +30,7 @@ lapply(pack, require, character.only=T)
 #### Set working directory and read data ####
 path_to_data <- "/home/dominik/Dropbox/Kandidat/Managing_big/footprint"
 #path_to_data <- "/Users/louisedagmarmadsen/Dropbox/Uni-noter/Kandidat/Sommerskole 2017/Managing and Analysing Cross Sectional and Spatial Data in Social Science/Exam"
-path_to_data <- "e:/001gerliterati/Letöltések/Summer course/project/footprint"
+path_to_data <- "e:/001gerliterati/Let?lt?sek/Summer course/project/footprint"
 setwd(path_to_data)
 
 #### Read data ####
@@ -172,15 +172,15 @@ plot(countries$HDI, countries$Total.Ecological.Footprint, main = "Relationship b
 abline(lm(countries$Total.Ecological.Footprint~countries$HDI), col="red")
 
 
-#### Changing regions: Eastern/Western Europe ####
+#### Changing regions: Eastern/EFTA Europe ####
 
 # Character version of Region
 countries$Region1 <- as.character(countries$Region) 
 
 countries$Region1[countries$Region1 == "Northern/Eastern Europe"] <- "Eastern Europe"
-countries$Region1[countries$Region1 == "European Union"] <- "Western Europe"
-countries$Region1[countries$Country == "Norway"] <- "Western Europe"
-countries$Region1[countries$Country == "Switzerland"] <- "Western Europe"
+countries$Region1[countries$Region1 == "European Union"] <- "European Union/EFTA"
+countries$Region1[countries$Country == "Norway"] <- "European Union/EFTA"
+countries$Region1[countries$Country == "Switzerland"] <- "European Union/EFTA"
 
 
 #### HDI scatterplots  ####
