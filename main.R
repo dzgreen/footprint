@@ -19,7 +19,13 @@
   # 3 ) What countries have an ecological debt and what countries have surplus? (Dominik)
   # 3a) Map
 
+# Tables
+  # Countries with the largest and smallest ecological footprint (eg. two tables, 3 columns: rank, country, gha)
+  # Other ideas?
 
+Pie
+
+# Case study
 #### Set working directory and read data ####
 path_to_data <- "/home/dominik/Dropbox/Kandidat/Managing_big/footprint"
 #path_to_data <- "/Users/louisedagmarmadsen/Dropbox/Uni-noter/Kandidat/Sommerskole 2017/Managing and Analysing Cross Sectional and Spatial Data in Social Science/Exam"
@@ -187,6 +193,11 @@ ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint)) + geom_point() +
 ggplot(countries, aes(x = GDP.per.Capita, y = Total.Ecological.Footprint, colour = Region1)) + geom_point() + 
   xlab ("GDP per Capita ($)") + ylab ("Total Ecological Footprint (gha)") + ggtitle ("Relationship between income and total ecological footprint")
 
+
+ggplot(countries, aes(x = GDP.per.Capita, y = Biocapacity.Deficit.or.Reserve, colour = Region1)) + geom_point() + 
+  xlab ("GDP per Capita ($)") + ylab ("Biocapacity.Deficit.or.Reserve") + ggtitle ("Relationship between income and total ecological footprint") + ylim(-10,20)
+
+ggplot(countries, aes(x = GDP.per.Capita, y = Biocapacity.Deficit.or.Reserve)) + geom_point() + facet_grid(~Region1)
 
 #######################################################################################
 #### 3. What countries have an ecological debt and what countries have surplus? ####
