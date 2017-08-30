@@ -19,18 +19,12 @@
   # 3 ) What countries have an ecological debt and what countries have surplus? (Dominik)
   # 3a) Map
 
-#### Reading packages ####
-
-# Insert packages that you use - and potentially delete the ones we don't use
-pack<-c("car","sandwich","lmtest","RColorBrewer","mgcv","foreign","xtable"
-        ,"AER","stargazer", "MASS", "ggplot2")
-
-lapply(pack, require, character.only=T)
 
 #### Set working directory and read data ####
 path_to_data <- "/home/dominik/Dropbox/Kandidat/Managing_big/footprint"
 #path_to_data <- "/Users/louisedagmarmadsen/Dropbox/Uni-noter/Kandidat/Sommerskole 2017/Managing and Analysing Cross Sectional and Spatial Data in Social Science/Exam"
 path_to_data <- "e:/001gerliterati/Let?lt?sek/Summer course/project/footprint"
+
 setwd(path_to_data)
 
 #### Read data ####
@@ -50,8 +44,9 @@ countries$GDP.per.Capita <- as.numeric(countries$GDP.per.Capita)
 
 # Look for NA's
 colSums(sapply(countries, is.na)) # Number of NA's per variable
-countries[rowSums(is.na(countries)) > 0,c(1,3)] # Return countries with NA's and their population. Few big countries lack data (Cambodia, Côte d'Ivoire, Finland, Korea, Norway, Somalia, Syrian Arab Republic) )
-# When running different function consider using na.rm = T. 
+countries[rowSums(is.na(countries)) > 0,c(1,3)] # Return countries with NA's and their population. 
+# Few big countries lack data (Cambodia, Côte d'Ivoire, Finland, Korea, Norway, Somalia, Syrian Arab Republic) )
+# When running different functions consider using na.rm = T. 
 
 # Look for outliers
 #install.packages("GGally")
@@ -61,7 +56,7 @@ ggpairs(countries[,3:11])  # showing scatterplots
 ############################################################################################
 #### 1. Distribution of the ecological footprint in the world ####
 ############################################################################################
-#### 1 ) What is the distribution of the ecological footprint in the world? (Gary) ####
+library(ggplot2)
 
 #making a histogram for footprint 
 #adding a vertical line showing global per capita biocap would be nice 
@@ -154,6 +149,8 @@ global_cfp<-mapCountryData(mapToPlot=globalmap, nameColumnToPlot="Carbon.Footpri
 ############################################################################################
 #### 2. Relationship between income and ecological footprint ####
 ############################################################################################
+
+library(ggplot2)
 
 # We are also looking at the relationship between HDI and ecological footprint.
 # As income (GDP pr. capita) is part of HDI, they are highly correlated. Still insteresting to see, if there's
