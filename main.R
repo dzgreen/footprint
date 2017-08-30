@@ -30,7 +30,7 @@ lapply(pack, require, character.only=T)
 #### Set working directory and read data ####
 path_to_data <- "/home/dominik/Dropbox/Kandidat/Managing_big/footprint"
 #path_to_data <- "/Users/louisedagmarmadsen/Dropbox/Uni-noter/Kandidat/Sommerskole 2017/Managing and Analysing Cross Sectional and Spatial Data in Social Science/Exam"
-# ""
+path_to_data <- "e:/001gerliterati/Letöltések/Summer course/project/footprint"
 setwd(path_to_data)
 
 #### Read data ####
@@ -57,6 +57,21 @@ countries[rowSums(is.na(countries)) > 0,c(1,3)] # Return countries with NA's and
 #install.packages("GGally")
 library(GGally)
 ggpairs(countries[,3:11])  # showing scatterplots
+
+############################################################################################
+#### 1. Distribution of the ecological footprint in the world ####
+############################################################################################
+# 1 ) What is the distribution of the ecological footprint in the world? (Gary)
+
+#making a histogram for footprint 
+#adding a vertical line showing global per capita biocap would be nice 
+ggplot(data=countries, aes(x=Total.Ecological.Footprint))+
+  geom_histogram( fill = "#E69F00", color = "dodgerblue2") + #colour of the bins' body and the lining
+  labs(x="Total Ecological Footprint per Capita", y = "Number of countries") + #labelling x and y axis
+  stat_bin(aes(y=..count.., label=..count..), geom="text", vjust=-0.5)+ # labelling bins wrt frequency on y axis
+  ggtitle("Total Ecological Footprint per Capita in the different countries") + # adding title
+  theme(plot.title = element_text(lineheight=.8, face="bold")) # setting title format 
+
 
 
 ############################################################################################
