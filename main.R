@@ -84,7 +84,19 @@ ggplot(data=countries, aes(x=Population..millions.))+
   ggtitle("Countries by population") + 
   theme(plot.title = element_text(lineheight=.8, face="bold"))
 
+#countries with highest population weigh more 
 
+#plotting cumulative distribution of global population with respect to TEFP per Capita
+#a vertical line  would show the proportion of global population living on a footprint of an agreeable level 
+
+ggplot(data=countries,aes(x =  sort(Total.Ecological.Footprint), y =  cumsum(Population..millions.)))+
+  geom_point(aes(colour=Region))+
+  labs(x="Total Ecological Footprint per Capita", y = "Cummulative population of countries") +
+  ggtitle("Cumulative distribution of global population
+  with respect to Total Ecological Footprint per Capita") + 
+  theme(plot.title = element_text(lineheight=.8, face="bold"))+
+  geom_text(aes(label=ifelse(Population..millions.>200,as.character(Country),'')),
+            hjust=-0.3,vjust=0, size=2.5)
 
 ############################################################################################
 #### 2. Relationship between income and ecological footprint ####
