@@ -180,11 +180,14 @@ countries$Region1[countries$Country == "Norway"] <- "European Union/EFTA"
 countries$Region1[countries$Country == "Switzerland"] <- "European Union/EFTA"
 
 
+
 #### HDI scatterplots  ####
 
 # Total Ecological Footprint ~ HDI, colour coded by regions
 ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint, colour = Region1)) + geom_point() + 
   xlab ("HDI") + ylab ("Total Ecological Footprint (gha)") + ggtitle ("Relationship between Human Development Index and total ecological footprint")
+# Interesting that many (African) countries have HDI increases with now footprint increase
+# Countries with higher HDI seem to have higher variation in total footprint
 
 ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint, colour = Region1)) + geom_point() + 
   labs(title = "Relationship between Human Development Index and Total Ecological Footprint", x ="HDI", y = "Total Ecological Footprint (gha)", colour = "Region")
