@@ -63,6 +63,29 @@ ggpairs(countries[,3:11])  # showing scatterplots
 ############################################################################################
 #### 1 ) What is the distribution of the ecological footprint in the world? (Gary) ####
 
+#Initial calculations
+
+Total.Global.Population<-sum(countries$Population..millions.)
+Total.Global.Population
+
+countries$Country.Level.Total.Footprint<-countries$Population..millions.*countries$Total.Ecological.Footprint
+Total.Global.Footprint<-sum(countries$Country.Level.Total.Footprint)
+Total.Global.Footprint
+Average.Total.Ecological.Footprint<-Total.Global.Footprint/Total.Global.Population
+Average.Total.Ecological.Footprint
+
+countries$Country.Level.Total.Biocapacity<-countries$Population..millions.*countries$Total.Biocapacity
+Total.Global.Biocapacity<-sum(countries$Country.Level.Total.Biocapacity)
+Total.Global.Biocapacity
+Average.Total.Biocapacity<-Total.Global.Biocapacity/Total.Global.Population
+Average.Total.Biocapacity
+
+Rate.of.overuse<-Total.Global.Footprint/Total.Global.Biocapacity
+Rate.of.overuse
+Global.overshooting.day<-1/Rate.of.overuse*365
+Global.overshooting.day
+
+
 #making a histogram for footprint 
 #adding a vertical line showing global per capita biocap and/or average of footprint would be nice 
 ggplot(data=countries, aes(x=Total.Ecological.Footprint))+
@@ -70,7 +93,11 @@ ggplot(data=countries, aes(x=Total.Ecological.Footprint))+
   labs(x="Total Ecological Footprint per Capita", y = "Number of countries") + #labelling x and y axis
   stat_bin(aes(y=..count.., label=..count..), geom="text", vjust=-0.5)+ # labelling bins wrt frequency on y axis
   ggtitle("Total Ecological Footprint per Capita in the different countries") + # adding title
-  theme(plot.title = element_text(lineheight=.8, face="bold")) # setting title format 
+  theme(plot.title = element_text(lineheight=.8, face="bold"))+ # setting title format 
+  geom_vline(xintercept = Average.Total.Ecological.Footprint)+
+  geom_text(mapping=aes(x=Average.Total.Ecological.Footprint,y=0, label="Global Average Ecological Footprint per Capita = 2.80"), size=3, angle=90, vjust=-0.4, hjust=0)+
+  geom_vline(xintercept = Average.Total.Biocapacity)+
+  geom_text(mapping=aes(x=Average.Total.Biocapacity,y=0, label="Global Average Biocapacity per Capita = 1.78"), size=3, angle=90, vjust=-0.4, hjust=0)
 
 #### 1a) Do countries in the same bin have the same the effect on the global level overshooting? ####
 
