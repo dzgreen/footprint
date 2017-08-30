@@ -61,7 +61,7 @@ ggpairs(countries[,3:11])  # showing scatterplots
 ############################################################################################
 #### 1. Distribution of the ecological footprint in the world ####
 ############################################################################################
-# 1 ) What is the distribution of the ecological footprint in the world? (Gary)
+#### 1 ) What is the distribution of the ecological footprint in the world? (Gary) ####
 
 #making a histogram for footprint 
 #adding a vertical line showing global per capita biocap would be nice 
@@ -72,7 +72,7 @@ ggplot(data=countries, aes(x=Total.Ecological.Footprint))+
   ggtitle("Total Ecological Footprint per Capita in the different countries") + # adding title
   theme(plot.title = element_text(lineheight=.8, face="bold")) # setting title format 
 
-# 1.1 Do countries in the same bin have the same the effect on the global level overshooting?
+#### 1a) Do countries in the same bin have the same the effect on the global level overshooting? ####
 
 #making a log scale histogram for the distribution of countries wrt their population
 
@@ -98,7 +98,7 @@ ggplot(data=countries,aes(x =  sort(Total.Ecological.Footprint), y =  cumsum(Pop
   geom_text(aes(label=ifelse(Population..millions.>200,as.character(Country),'')),
             hjust=-0.3,vjust=0, size=2.5)
 
-#1.2 What drives TEFP per capita?
+#### 1.b) What drives TEFP per capita? ####
 
 #plotting the relationship of TEFP and CFP
 
@@ -116,6 +116,39 @@ ggplot(data=countries,aes(x =  Total.Ecological.Footprint, y =  Carbon.Footprint
 ggplot(data=countries,aes(x =  Total.Ecological.Footprint, y =  Fish.Footprint))+
   geom_point(aes(colour=Region))+ ylim(0, 15)
 
+
+#### 1c) Maps  ####
+#(legends missing!!!!)
+
+#install.packages("rworldmap")
+library(rworldmap)
+
+#making a worldmap showing TEFP
+
+globalmap<-joinCountryData2Map(countries,
+                            joinCode="NAME", 
+                            nameJoinColumn="Country",
+                            verbose=T)
+
+par(mai=c(0,0,0.2,0),xaxs="i",yaxs="i") 
+
+global_tefp<-mapCountryData(mapToPlot=globalmap, nameColumnToPlot="Total.Ecological.Footprint",
+                            catMethod=c(0,2,4,6,10),
+                            colourPalette="heat",
+                            mapRegion="world",
+                            addLegend=F,
+                            mapTitle="Total Ecological Footprint in the world",
+                            aspect=1,lwd=0.5)
+
+#making a worldmap showing CFP
+
+global_cfp<-mapCountryData(mapToPlot=globalmap, nameColumnToPlot="Carbon.Footprint",
+                           catMethod=c(0,1,2,3,4,10),
+                           colourPalette="heat",
+                           mapRegion="world",
+                           addLegend=F,
+                           mapTitle="Carbon Footprint in the world",
+                           aspect=1,lwd=0.5)
 
 
 ############################################################################################
