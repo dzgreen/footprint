@@ -195,6 +195,29 @@ global_cfp<-mapCountryData(mapToPlot=globalmap, nameColumnToPlot="Carbon.Footpri
 
 library(ggplot2)
 
+#### Income scatterplots ####
+
+# Total Ecological Footprint ~ Income, colour coded by regions
+ggplot(countries, aes(x = GDP.per.Capita, y = Total.Ecological.Footprint, colour = Region1)) + geom_point() + 
+  labs(title = "Relationship between GDP per Capita and Total Ecological Footprint", 
+       x ="GDP per Capita ($)", y = "Total Ecological Footprint (gha)", colour = "Region")
+
+# The plot shows a clustering of the majority of countries within the first 'square' of an Total Ecological Footprint
+# below 5 gha and GDP pr. Capita below $1500. Outside of this is most European Union/Efta countries and North America
+# as well as some Middle East/Central Asian countries (most likely oil producing) and Asia-Pacific.
+
+ggplot(countries, aes(x = GDP.per.Capita, y = Biocapacity.Deficit.or.Reserve, colour = Region1)) + geom_point() + 
+  labs(title = "Relationship between GDP per Capita and the Biocapacity balance", 
+       x ="GDP per Capita ($)", y = "Biocapacity - Deficit or Reserve (gha)", colour = "Region")
+
+# This plot looks into the relationship between income and biocapacity balance. Is it the case that income rich
+# countries have a biocapacity deficit whilst income poor countries have surplusses? This plot does not suggest 
+# such a relationship.
+### -> DOMINIK MAYBE YOUR TEST/TABLE COULD GO HERE? ###
+
+
+#### HDI scatterplots  ####
+
 # We are also looking at the relationship between HDI and ecological footprint.
 # As income (GDP pr. capita) is part of HDI, they are highly correlated. Still insteresting to see, if there's
 # any difference.
@@ -202,29 +225,19 @@ library(ggplot2)
 cor(countries$GDP.per.Capita, countries$HDI, use = "complete.obs", method="kendall")
 # As expected correlation is high: 0.8075072
 
-#### HDI scatterplots  ####
 # Total Ecological Footprint ~ HDI, colour coded by regions
 ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint, colour = Region1)) + geom_point() + 
   labs(title = "Relationship between Human Development Index and Total Ecological Footprint", 
        x ="HDI", y = "Total Ecological Footprint (gha)", colour = "Region")
-# Interesting that many (African) countries have HDI increases with now footprint increase
-# Countries with higher HDI seem to have higher variation in total footprint
+
+# The plot shows a clear regional clustering in the relationship between HDI and Total Ecological Footprint.
+# In the African region there is more variation in the HDI-level, but without increases in the total footprint
+# Correspondingly, countries with higher HDI seem to have higher variation in total footprint
 
 # Total Ecological Footprint ~ HDI, different plots for each region
 ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint)) + geom_point() + facet_grid(~Region1)
 
-
-#### Income scatterplots ####
-
-# Total Ecological Footprint ~ Income, colour coded by regions
-ggplot(countries, aes(x = GDP.per.Capita, y = Total.Ecological.Footprint, colour = Region1)) + geom_point() + 
-  xlab ("GDP per Capita ($)") + ylab ("Total Ecological Footprint (gha)") + ggtitle ("Relationship between income and total ecological footprint")
-
-
-ggplot(countries, aes(x = GDP.per.Capita, y = Biocapacity.Deficit.or.Reserve, colour = Region1)) + geom_point() + 
-  xlab ("GDP per Capita ($)") + ylab ("Biocapacity.Deficit.or.Reserve") + ggtitle ("Relationship between income and total ecological footprint") + ylim(-10,20)
-
-ggplot(countries, aes(x = GDP.per.Capita, y = Biocapacity.Deficit.or.Reserve)) + geom_point() + facet_grid(~Region1)
+# A different plot showing the regional differences
 
 #######################################################################################
 #### 3. What countries have an ecological debt and what countries have surplus? ####
