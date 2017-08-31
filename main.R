@@ -146,17 +146,16 @@ ggplot(data=countries, aes(x=Population..millions.))+ #determining the data set 
 
 ggplot(data=countries[order(countries$Total.Ecological.Footprint) , ], # ordering dataframe by TEFP so that we can sum population in order of TEFP
        aes(x =  Total.Ecological.Footprint, y =  cumsum(Population..millions.)))+ #determining variables used in ggplot2 functions below
-  geom_point(aes(colour=Region1))+ #adding data points to countries with different colours in different regions
   labs(x="Total Ecological Footprint per Capita", y = "Cummulative population of countries") + #labelling x and y axis
   ggtitle("Cumulative distribution of global population with respect to Total Ecological Footprint per Capita") +  # adding title
   theme(plot.title = element_text(lineheight=.8, face="bold"))+# setting title format 
-  geom_text(aes(label=ifelse(Population..millions.>200,as.character(Country),'')), hjust=-0.3,vjust=0, size=2.5)+#tagging countries with highest population
+  geom_text(aes(label=ifelse(Population..millions.>150,as.character(Country),'')), hjust=1.17,vjust=0, size=2.5)+#tagging countries with highest population
   geom_vline(xintercept = Average.Total.Ecological.Footprint, linetype="dotdash")+ #adding a vertical line showing global average per capita footprint 
   geom_text(mapping=aes(x=Average.Total.Ecological.Footprint,y=0, label="Global Average Ecological Footprint per Capita = 2.80"),
             size=2.5, angle=90, vjust=2, hjust=0.1, color="#CC0000")+ #labelling vertical line, setting its font size, direction, position
   geom_vline(xintercept = Average.Total.Biocapacity, linetype="dotdash")+ #adding a vertical line showing global average biocapacity per capita   
   geom_text(mapping=aes(x=Average.Total.Biocapacity,y=0, label="Global Average Biocapacity per Capita = 1.78"),
-            size=2.5, angle=90, vjust=2, hjust=0.11, color="#009E73") #labelling vertical line, setting its font size, direction, position
+  scale_size(breaks=c(0,1200,4000,12000,40000))
   
 
 #### 1c) What drives TEFP per capita? ####
@@ -179,7 +178,7 @@ ggplot(data=countries,aes(x =  Total.Ecological.Footprint, y =  Fish.Footprint))
 
 
 #### 1c) Maps  ####
-#(legends missing!!!!)
+
 
 #install.packages("rworldmap")
 library(rworldmap)
@@ -187,19 +186,19 @@ library(rworldmap)
 #making a worldmap showing TEFP
 
 globalmap<-joinCountryData2Map(countries,
-                            joinCode="NAME", 
-                            nameJoinColumn="Country",
-                            verbose=T)
+                            joinCode="NAME", # format of joining country data
+                            nameJoinColumn="Country", # column used for joining dataframe to spatial data
+                            verbose=T) # if true we get messages to the console while joining country specific data to map
 
-par(mai=c(0,0,0.2,0),xaxs="i",yaxs="i") 
+par(mai=c(0,0,0.2,0),xaxs="i",yaxs="i") # graphical parameters on margins and axis
 
 global_tefp<-mapCountryData(mapToPlot=globalmap, nameColumnToPlot="Total.Ecological.Footprint",
-                            catMethod=c(0,2,4,6,10),
+                            catMethod=c(0,2,4,6,10), # setting breaks 
                             colourPalette="heat",
                             mapRegion="world",
                             addLegend=F,
                             mapTitle="Total Ecological Footprint in the world",
-                            aspect=1,lwd=0.5)
+                            aspect=1,lwd=0.5) #map aspect and country borders
 
 #making a worldmap showing CFP
 
