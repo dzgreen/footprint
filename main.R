@@ -146,6 +146,7 @@ ggplot(data=countries, aes(x=Population..millions.))+ #determining the data set 
 
 ggplot(data=countries[order(countries$Total.Ecological.Footprint) , ], # ordering dataframe by TEFP so that we can sum population in order of TEFP
        aes(x =  Total.Ecological.Footprint, y =  cumsum(Population..millions.)))+ #determining variables used in ggplot2 functions below
+  geom_point(aes(colour=Region1, size=GDP.per.Capita))+ #adding data points to countries with different colours in different regions
   labs(x="Total Ecological Footprint per Capita", y = "Cummulative population of countries") + #labelling x and y axis
   ggtitle("Cumulative distribution of global population with respect to Total Ecological Footprint per Capita") +  # adding title
   theme(plot.title = element_text(lineheight=.8, face="bold"))+# setting title format 
@@ -155,6 +156,7 @@ ggplot(data=countries[order(countries$Total.Ecological.Footprint) , ], # orderin
             size=2.5, angle=90, vjust=2, hjust=0.1, color="#CC0000")+ #labelling vertical line, setting its font size, direction, position
   geom_vline(xintercept = Average.Total.Biocapacity, linetype="dotdash")+ #adding a vertical line showing global average biocapacity per capita   
   geom_text(mapping=aes(x=Average.Total.Biocapacity,y=0, label="Global Average Biocapacity per Capita = 1.78"),
+            size=2.5, angle=90, vjust=2, hjust=0.11, color="#009E73")+ #labelling vertical line, setting its font size, direction, position
   scale_size(breaks=c(0,1200,4000,12000,40000))
   
 
