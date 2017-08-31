@@ -186,6 +186,8 @@ library(rworldmap)
 
 #making a worldmap showing TEFP
 
+mapDevice('x11')
+
 globalmap<-joinCountryData2Map(countries,
                             joinCode="NAME", # format of joining country data
                             nameJoinColumn="Country", # column used for joining dataframe to spatial data
@@ -201,6 +203,8 @@ global_tefp<-mapCountryData(mapToPlot=globalmap, nameColumnToPlot="Total.Ecologi
                             mapTitle="Total Ecological Footprint in the world",
                             aspect=1,lwd=0.5) #map aspect and country borders
 
+do.call(addMapLegend,c(global_bcap2,legendLabels="all",legendWidth=0.5))
+
 #making a worldmap showing CFP
 
 global_cfp<-mapCountryData(mapToPlot=globalmap, nameColumnToPlot="Carbon.Footprint",
@@ -211,7 +215,7 @@ global_cfp<-mapCountryData(mapToPlot=globalmap, nameColumnToPlot="Carbon.Footpri
                            mapTitle="Carbon Footprint in the world",
                            aspect=1,lwd=0.5)
 
-
+do.call(addMapLegend,c(global_bcap2,legendLabels="all",legendWidth=0.5))
 ############################################################################################
 #### 2. Relationship between income and ecological footprint ####
 ############################################################################################
