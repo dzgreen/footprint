@@ -64,7 +64,7 @@ ggpairs(countries[,3:11])  # showing scatterplots
 #### 1 ) What is the distribution of the ecological footprint in the world? (Gary) ####
 
 #making a histogram for footprint 
-#adding a vertical line showing global per capita biocap would be nice 
+#adding a vertical line showing global per capita biocap would be nice
 ggplot(data=countries, aes(x=Total.Ecological.Footprint))+
   geom_histogram( fill = "#E69F00", color = "dodgerblue2") + #colour of the bins' body and the lining
   labs(x="Total Ecological Footprint per Capita", y = "Number of countries") + #labelling x and y axis
@@ -239,10 +239,21 @@ ggplot(countries, aes(x = GDP.per.Capita, y = Total.Ecological.Footprint, colour
 
 #install.packages("rworldmap")
 library(rworldmap)
+library(RColorBrewer) # Add better colors
+library(raster)
 mapDevice('x11')
 dfmap <- countries[,c(1,18)]
 def_res_map <- joinCountryData2Map(dF = dfmap, joinCode = "NAME", nameJoinColumn = "Country", nameCountryColumn = "Country")
-library(RColorBrewer) # Add better colors
 colourPalette <- brewer.pal(7,'RdYlGn')
-mapCountryData(def_res_map, nameColumnToPlot = "Biocapacity.Deficit.or.Reserve", colourPalette=colourPalette)
+mapCountryData(def_res_map, 
+               nameColumnToPlot = "Biocapacity.Deficit.or.Reserve", 
+               colourPalette=colourPalette)
+country_coord <- data.frame(coordinates(def_res_map),stringsAsFactors=F)
+
+reserve <- ifelse(test = countries$Biocapacity.Deficit.or.Reserve > 0, yes = 1, no = 0) 
+rich <- ifelse(test = countries$GDP.per.Capita > 8280, yes = 1, no = 0)
+table(reserve, rich)
+# Since we get a p-Value just above the significance level of 0.05,
+# we can not reject the null hypothesis that the two variables are dependent.
+
 
