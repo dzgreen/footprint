@@ -266,7 +266,8 @@ ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint)) + geom_point(aes
   scale_color_brewer(palette="Set1") + 
   labs(title = "Relationship between Human Development Index and Total Ecological Footprint", 
 
-ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint, colour = Region1)) + geom_point() +
+ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint)) + geom_point(aes(colour = Region1)) + 
+  scale_color_brewer(palette="Set1") +
   labs(title = "Relationship between Human Development Index and Total Ecological Footprint",
        x ="HDI", y = "Total Ecological Footprint (gha)", colour = "Region")
 
