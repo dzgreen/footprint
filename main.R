@@ -130,7 +130,7 @@ ggplot(data=countries, aes(x=Total.Ecological.Footprint))+
 #making a log scale histogram for the distribution of countries wrt their population
 
 ggplot(data=countries, aes(x=Population..millions.))+ #determining the data set and variable used in ggplot2 functions below
-  geom_histogram( fill = "##56B4E9", color = "dodgerblue2") + #colour of the bins' body and lining
+  geom_histogram( fill = "#56B4E9", color = "dodgerblue2") + #colour of the bins' body and lining
   scale_x_continuous(trans="log10",breaks = c(1,5,10,50,100,500,1000,1500)) + # setting x axis to log scale and breaks as a numeric vector
   labs(x="Population (Millions) - Log scale ", y = "Number of countries") + #labelling x and y axis
   stat_bin(aes(y=..count.., label=..count..), geom="text", vjust=-0.5)+ # labelling bins wrt frequency on y axis
