@@ -1,57 +1,46 @@
-#### Workflow ####
-# 1) PULL others changes from remote to local
-# 2) start working
-# 3) COMMIT frequently, write meaningfull COMMIT messages
-# 4) When finished working, PULL others changes again, make a final COMMIT and PUSH your work to remote.
+---
+title: "Global Ecological Footprint in 2016"
+subtitle: 'Final exam in the course Managing Big and Spatial Data in Social Science'
+author:
+- Louise Dagmar Madsen^[louise.d.madsen@gmail.com]
+- Gergo Literati^[gerliterati@gmail.com ]
+- Dominik Zdyb Lillemaehlum^[dominik2711@gmail.com]
+date: "August 25, 2017"
+output: 
+  html_document: 
+    number_sections: yes
+    toc: yes
+    fig_width: 14
+    fig_height: 14
+---
 
-#### Outline ####
-# Set working directory and read in data (Dominik)
-# Data inspection and cleaning (Dominik)
-  # types of variables
-  # NA's
-  # Outliers
-# Data visualisation (All)
-  # 1 ) What is the distribution of the ecological footprint in the world? (Gary)
-  # 1a) Histograms
-  # 1b) Map
-  # 2 ) what is the relationship between income and HDI and ecological foorprint in the world? (Louise)
-  # 2a) Scatterplot, correlation coefficient
-  # 3 ) What countries have an ecological debt and what countries have surplus? (Dominik)
-  # 3a) Map
+# Read data
 
-# Tables
-  # Countries with the largest and smallest ecological footprint (eg. two tables, 3 columns: rank, country, gha)
-  # Other ideas?
-
-Pie
-
-# Case study
-
-
-
-#### Set working directory and read data ####
+```{r Read data, echo=FALSE, message=FALSE, warning=FALSE}
 path_to_data <- "/home/dominik/Dropbox/Kandidat/Managing_big/footprint"
-#path_to_data <- "/Users/louisedagmarmadsen/Dropbox/Uni-noter/Kandidat/Sommerskole 2017/Managing and Analysing Cross Sectional and Spatial Data in Social Science/Exam"
-path_to_data <- "e:/001gerliterati/Let?lt?sek/Summer course/project/footprint"
+# path_to_data <- "/Users/louisedagmarmadsen/Dropbox/Uni-noter/Kandidat/Sommerskole 2017/Managing and Analysing Cross Sectional and Spatial Data in Social Science/Exam"
+# path_to_data <- "e:/001gerliterati/Let?lt?sek/Summer course/project/footprint"
+# You can provide a relative path with knitr::opts_chunk$set(root.dir = normalizePath(".."))
+knitr::opts_knit$set(root.dir = path_to_data)
+knitr::opts_knit$get("root.dir") # prints the working directory
 
-setwd(path_to_data)
-
-#### Read data ####
 countries <- read.csv(file = "countries.csv")
+```
 
+# Data inspection and cleaning
 
-#### Data inspection and cleaning ####
+```{r Data inspection and cleaning, echo=TRUE, message=FALSE, warning=FALSE}
 dim(countries) # rows and columns
 str(countries) # variable and their mode.
 
-## Change modes and remove a $ sign ##
+# Change modes and remove a $ sign
 countries$Country <- as.character(countries$Country) # Change Country from factor to numeric
 countries$GDP.per.Capita <- as.character(countries$GDP.per.Capita)
 countries$GDP.per.Capita <- gsub(x = countries$GDP.per.Capita, pattern = "$", replacement = "", fixed = T) # fixed = T makes gsub understand pattern as a string insted of regex
 countries$GDP.per.Capita <- gsub(x = countries$GDP.per.Capita, pattern = ",", replacement = "", fixed = T)
 countries$GDP.per.Capita <- as.numeric(countries$GDP.per.Capita)
 
-## Changing regions: Eastern/EFTA Europe ##
+# Changing regions: Eastern/EFTA Europe
 
 # Character version of Region
 countries$Region1 <- as.character(countries$Region)
@@ -61,57 +50,56 @@ countries$Region1[countries$Region1 == "European Union"] <- "European Union/EFTA
 countries$Region1[countries$Country == "Norway"] <- "European Union/EFTA"
 countries$Region1[countries$Country == "Switzerland"] <- "European Union/EFTA"
 
-## Look for NA's ##
+# Look for NA's ##
 colSums(sapply(countries, is.na)) # Number of NA's per variable
 countries[rowSums(is.na(countries)) > 0,c(1,3)] # Return countries with NA's and their population.
 # Few big countries lack data (Cambodia, Côte d'Ivoire, Finland, Korea, Norway, Somalia, Syrian Arab Republic) )
 # When running different functions consider using na.rm = T.
 
-## Look for outliers ##
-#install.packages("GGally")
+# Look for outliers ##
+# install.packages("GGally")
 library(GGally)
 ggpairs(countries[,3:11])  # showing scatterplots
 
-############################################################################################
-#### 1. Distribution of the ecological footprint in the world ####
-############################################################################################
+```
+
+# Global distribution of the ecological footprint.
+
+```{r Global distribution of the ecological footprint, echo=TRUE, message=FALSE, warning=FALSE, results='asis'}
 library(ggplot2)
-
-####Initial calculations####
-
 # summing up the population of the 188 countries represented in the data
 Total.Global.Population<-sum(countries$Population..millions.)
-Total.Global.Population
+
 
 # adding a vector to data frame showing country level total footprint
 # as ecological footprint per capita multiplied the population of the country
 countries$Country.Level.Total.Footprint<-countries$Population..millions.*countries$Total.Ecological.Footprint
 
-#determining total global footprint as the sum of country level total footprints
+# determining total global footprint as the sum of country level total footprints
 Total.Global.Footprint<-sum(countries$Country.Level.Total.Footprint)
-Total.Global.Footprint
 
-#determining global average footprint per capita as total global footprint divided by population
+
+# determining global average footprint per capita as total global footprint divided by population
 Average.Total.Ecological.Footprint<-Total.Global.Footprint/Total.Global.Population
-Average.Total.Ecological.Footprint
+
 
 # adding a vector to data frame showing country level biocapacity
 # as biocapacity per capita multiplied the population of the country
 countries$Country.Level.Total.Biocapacity<-countries$Population..millions.*countries$Total.Biocapacity
 
-#determining total global biocapacity as the sum of country level biocapacities
+# determining total global biocapacity as the sum of country level biocapacities
 Total.Global.Biocapacity<-sum(countries$Country.Level.Total.Biocapacity)
-Total.Global.Biocapacity
-#determining global average biocapacity per capita as total global biocapacity divided by population
-Average.Total.Biocapacity<-Total.Global.Biocapacity/Total.Global.Population
-Average.Total.Biocapacity
 
-#determining rate of overshoot as total global footprint divided by total global biocapacity
+# determining global average biocapacity per capita as total global biocapacity divided by population
+Average.Total.Biocapacity<-Total.Global.Biocapacity/Total.Global.Population
+
+
+# determining rate of overshoot as total global footprint divided by total global biocapacity
 Rate.of.overshoot<-Total.Global.Footprint/Total.Global.Biocapacity
-Rate.of.overshoot
+
 
 Global.overshooting.day<-1/Rate.of.overshoot*365
-Global.overshooting.day
+
 
 # Present results in a stargazer table.
 
@@ -133,8 +121,12 @@ key_numbers <- c(Total.Global.Population,
 
 key_numbers_table <- data.frame(key_titles, key_numbers)
 
-#### 1a) What is the distribution of TEFP compared to global average footprint and biocapacity? ####
+knitr::kable(key_numbers_table, digits = 0, col.names = c("Name of the key number", "Key number"))
+```
 
+## What is the distribution of TEFP compared to global average footprint and biocapacity?
+
+```{r What is the distribution of TEFP compared to global average footprint and biocapacity, echo=TRUE, message=FALSE, warning=FALSE}
 #making a histogram for footprint
 #adding a vertical line showing global per capita biocap would be nice
 ggplot(data=countries, aes(x=Total.Ecological.Footprint))+
@@ -150,24 +142,26 @@ ggplot(data=countries, aes(x=Total.Ecological.Footprint))+
   geom_text(mapping=aes(x=Average.Total.Biocapacity,y=0, label="Global Average Biocapacity per Capita = 1.78"),
             size=3, angle=90, vjust=-0.4, hjust=0, color="#009E73") #labelling vertical dotdash line, setting its font size, direction, position
 
-#### 1b) Do countries with similar TEFP per capita have the same effect on the global level overshooting? ####
+```
 
+## Do countries with similar TEFP per capita have the same effect on the global level overshooting?
+
+```{r Do countries with similar TEFP per capita have the same effect on the global level of overshooting, echo=TRUE, message=FALSE, warning=FALSE}
 #making a log scale histogram for the distribution of countries wrt their population
 
 ggplot(data=countries, aes(x=Population..millions.))+ #determining the data set and variable used in ggplot2 functions below
-  geom_histogram( fill = "##56B4E9", color = "dodgerblue2") + #colour of the bins' body and lining
+  geom_histogram( fill = "#56B4E9", color = "dodgerblue2") + #colour of the bins' body and lining
   scale_x_continuous(trans="log10",breaks = c(1,5,10,50,100,500,1000,1500)) + # setting x axis to log scale and breaks as a numeric vector
   labs(x="Population (Millions) - Log scale ", y = "Number of countries") + #labelling x and y axis
   stat_bin(aes(y=..count.., label=..count..), geom="text", vjust=-0.5)+ # labelling bins wrt frequency on y axis
   ggtitle("Countries by population") + # adding title
   theme(plot.title = element_text(lineheight=.8, face="bold")) # setting title format
 
-#countries with high population weigh more in global level overshooting
 
-#plotting cumulative distribution of global population with respect to TEFP per Capita
-#the two vertical lines show the proportion of global population having a footprint of a sustainable level and an average level respectively
+# countries with high population weigh more in global level overshooting
 
-
+# plotting cumulative distribution of global population with respect to TEFP per Capita
+# the two vertical lines show the proportion of global population having a footprint of a sustainable level and an average level respectively
 ggplot(data=countries[order(countries$Total.Ecological.Footprint) , ], # ordering dataframe by TEFP so that we can sum population in order of TEFP
        aes(x =  Total.Ecological.Footprint, y =  cumsum(Population..millions.)))+ #determining variables used in ggplot2 functions below
   geom_point(aes(colour=Region1, size=GDP.per.Capita))+ #adding data points to countries with different colours in different regions
@@ -184,28 +178,29 @@ ggplot(data=countries[order(countries$Total.Ecological.Footprint) , ], # orderin
   scale_size(breaks=c(0,1200,4000,12000,40000))
 
 
-#### 1c) What drives TEFP per capita? ####
 
+```
+
+## What drives TEFP per capita?
+
+```{r What drives TEFP per capita, echo=TRUE, message=FALSE, warning=FALSE}
 #plotting the relationship of TEFP and CFP
 
-ggplot(data=countries,aes(x =  Total.Ecological.Footprint, y =  Carbon.Footprint))+ #determining the data set and variable used in ggplot2 functions below
-  geom_point(aes(colour=Region))+ #adding data points to countries with different colours in different regions
-  labs(x="Total Ecological Footprint per Capita", y = "Carbon Footprint per Capita") + #labelling x and y axis
-  ggtitle("The relationship of Total Ecological Footprint per Capita and Carbon Footprint per Capita") + # adding title
-  theme(plot.title = element_text(lineheight=.8, face="bold"))+# setting title format
-  geom_text(aes(label=ifelse(Carbon.Footprint>5 | (Total.Ecological.Footprint>5 & (Carbon.Footprint/Total.Ecological.Footprint<0.6)),as.character(Country),'')),
-            hjust=-0.3,vjust=0, size=2.5)+#tagging countries with highest carbon footprint or high TEFP with relatively low carbon FP
-  geom_smooth(method='lm',formula=y~x)+ #adding a linear regression line
-  ggsave(filename="carbonplot.pdf",width=8,height=4) # saving plot to a pdf file
 
-#plotting the relationship of TEFP and fish FP
-ggplot(data=countries,aes(x =  Total.Ecological.Footprint, y =  Fish.Footprint))+
-  geom_point(aes(colour=Region))+ ylim(0, 15)
+# ggplot(data=countries,aes(x =  Total.Ecological.Footprint, y =  Carbon.Footprint))+ #determining the data set and variable used in ggplot2 functions below
+#   geom_point(aes(colour=Region))+ #adding data points to countries with different colours in different regions
+#   labs(x="Total Ecological Footprint per Capita", y = "Carbon Footprint per Capita") + #labelling x and y axis
+#   ggtitle("The relationship of Total Ecological Footprint per Capita and Carbon Footprint per Capita") + # adding title
+#   theme(plot.title = element_text(lineheight=.8, face="bold"))+# setting title format
+#   geom_text(aes(label=ifelse(Carbon.Footprint>5 | (Total.Ecological.Footprint>5 & (Carbon.Footprint/Total.Ecological.Footprint<0.6)),as.character(Country),'')),
+#             hjust=-0.3,vjust=0, size=2.5)+ #tagging countries with highest carbon footprint or high TEFP with relatively low carbon FP
+#   geom_smooth(method='lm',formula=y~x)+ #adding a linear regression line
+# 
+# #plotting the relationship of TEFP and fish FP
+# ggplot(data=countries,aes(x =  Total.Ecological.Footprint, y =  Fish.Footprint))+
+#   geom_point(aes(colour=Region))+ ylim(0, 15)
 
-
-#### 1c) Maps  ####
-
-
+# Maps
 #install.packages("rworldmap")
 library(rworldmap)
 
@@ -236,14 +231,13 @@ global_cfp<-mapCountryData(mapToPlot=globalmap, nameColumnToPlot="Carbon.Footpri
                            mapTitle="Carbon Footprint in the world",
                            aspect=1,lwd=0.5)
 
+```
 
-############################################################################################
-#### 2. Relationship between income and ecological footprint ####
-############################################################################################
+# Relationship between income and ecological footprint
 
-library(ggplot2)
+```{r Relationship between income and ecological footprint, echo=TRUE, message=FALSE, warning=FALSE}
 
-#### Income scatterplots ####
+# Income scatterplots
 
 # Total Ecological Footprint ~ Income, colour coded by regions
 ggplot(countries, aes(x = GDP.per.Capita, y = Total.Ecological.Footprint, colour = Region1)) + geom_point() +
@@ -271,7 +265,8 @@ chisq.test(ind_table )
 # we can not reject the null hypothesis that the two variables are dependent. At least not on a 5% level
 # We could reject the dependence hypothesis on a 10% level. 
 
-#### HDI scatterplots  ####
+# HDI scatterplots
+
 
 # We are also looking at the relationship between HDI and ecological footprint.
 # As income (GDP pr. capita) is part of HDI, they are highly correlated. Still insteresting to see, if there's
@@ -293,22 +288,35 @@ ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint, colour = Region1)
 ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint)) + geom_point() + facet_grid(~Region1)
 
 # A different plot showing the regional differences
+```
 
-#######################################################################################
-#### 3. What countries have an ecological debt and what countries have surplus? ####
-#######################################################################################
+# What countries have an ecological debt and what countries have surplus?
 
-#install.packages("rworldmap")
+```{r What countries have an ecological debt and what countries have surplus, echo=TRUE, message=FALSE, warning=FALSE}
 library(rworldmap)
 library(RColorBrewer) # Add better colors
 library(raster)
-mapDevice('x11')
 dfmap <- countries[,c(1,18)]
 def_res_map <- joinCountryData2Map(dF = dfmap, joinCode = "NAME", nameJoinColumn = "Country", nameCountryColumn = "Country")
 colourPalette <- brewer.pal(7,'RdYlGn')
 mapCountryData(def_res_map,
                nameColumnToPlot = "Biocapacity.Deficit.or.Reserve",
                colourPalette=colourPalette)
-country_coord <- data.frame(coordinates(def_res_map),stringsAsFactors=F)
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
