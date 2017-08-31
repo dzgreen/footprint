@@ -222,12 +222,8 @@ library(RColorBrewer)
 #### Income scatterplots ####
 
 # Total Ecological Footprint ~ Income, colour coded by regions
-
 ggplot(countries, aes(x = GDP.per.Capita, y = Total.Ecological.Footprint)) + geom_point(aes(colour = Region1)) + 
   scale_color_brewer(palette="Set1") +
-  labs(title = "Relationship between GDP per Capita and Total Ecological Footprint", 
-
-ggplot(countries, aes(x = GDP.per.Capita, y = Total.Ecological.Footprint, colour = Region1)) + geom_point() +
   labs(title = "Relationship between GDP per Capita and Total Ecological Footprint",
        x ="GDP per Capita ($)", y = "Total Ecological Footprint (gha)", colour = "Region")
 
@@ -235,14 +231,11 @@ ggplot(countries, aes(x = GDP.per.Capita, y = Total.Ecological.Footprint, colour
 # below 5 gha and GDP pr. Capita below $1500. Outside of this is most European Union/Efta countries and North America
 # as well as some Middle East/Central Asian countries (most likely oil producing) and Asia-Pacific.
 
-<<<<<<< HEAD
+
+# Biocapacity balance ~ income, colour coded by regions
 ggplot(countries, aes(x = GDP.per.Capita, y = Biocapacity.Deficit.or.Reserve)) + geom_point(aes(colour = Region1)) + 
-  scale_color_brewer(palette="Set1") + 
-  labs(title = "Relationship between GDP per Capita and the Biocapacity balance", 
-=======
-ggplot(countries, aes(x = GDP.per.Capita, y = Biocapacity.Deficit.or.Reserve, colour = Region1)) + geom_point() +
+  scale_color_brewer(palette="Set1") +
   labs(title = "Relationship between GDP per Capita and the Biocapacity balance",
->>>>>>> a7a82cc8af2f9a6302127c8394947397db8eba17
        x ="GDP per Capita ($)", y = "Biocapacity - Deficit or Reserve (gha)", colour = "Region")
 
 # This plot looks into the relationship between income and biocapacity balance. Is it the case that income rich
@@ -261,11 +254,6 @@ cor(countries$GDP.per.Capita, countries$HDI, use = "complete.obs", method="kenda
 # As expected correlation is high: 0.8075072
 
 # Total Ecological Footprint ~ HDI, colour coded by regions
-<<<<<<< HEAD
-ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint)) + geom_point(aes(colour = Region1)) + 
-  scale_color_brewer(palette="Set1") + 
-  labs(title = "Relationship between Human Development Index and Total Ecological Footprint", 
-
 ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint)) + geom_point(aes(colour = Region1)) + 
   scale_color_brewer(palette="Set1") +
   labs(title = "Relationship between Human Development Index and Total Ecological Footprint",
@@ -277,7 +265,9 @@ ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint)) + geom_point(aes
 
 # Total Ecological Footprint ~ HDI, different plots for each region
 ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint)) + geom_point(aes(colour = Region1)) + 
-  scale_color_brewer(palette="Set1") + facet_grid(~Region1)
+  scale_color_brewer(palette="Set1") + facet_grid(~Region1) +
+  labs(title = "Relationship between Human Development Index and Total Ecological Footprint",
+       x ="HDI", y = "Total Ecological Footprint (gha)", colour = "Region")
 # A different plot showing the regional differences
 
 #######################################################################################
