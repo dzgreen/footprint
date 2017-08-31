@@ -21,9 +21,7 @@
 
 # Tables
   # Countries with the largest and smallest ecological footprint (eg. two tables, 3 columns: rank, country, gha)
-  # Other ideas?
 
-Pie
 
 # Case study
 
@@ -31,7 +29,7 @@ Pie
 
 #### Set working directory and read data ####
 path_to_data <- "/home/dominik/Dropbox/Kandidat/Managing_big/footprint"
-#path_to_data <- "/Users/louisedagmarmadsen/Dropbox/Uni-noter/Kandidat/Sommerskole 2017/Managing and Analysing Cross Sectional and Spatial Data in Social Science/Exam"
+path_to_data <- "/Users/louisedagmarmadsen/Dropbox/Uni-noter/Kandidat/Sommerskole 2017/Managing and Analysing Cross Sectional and Spatial Data in Social Science/Exam"
 path_to_data <- "e:/001gerliterati/Let?lt?sek/Summer course/project/footprint"
 
 setwd(path_to_data)
@@ -155,7 +153,7 @@ ggplot(data=countries, aes(x=Total.Ecological.Footprint))+
 #making a log scale histogram for the distribution of countries wrt their population
 
 ggplot(data=countries, aes(x=Population..millions.))+ #determining the data set and variable used in ggplot2 functions below
-  geom_histogram( fill = "##56B4E9", color = "dodgerblue2") + #colour of the bins' body and lining
+  geom_histogram( fill = "#56B4E9", color = "dodgerblue2") + #colour of the bins' body and lining
   scale_x_continuous(trans="log10",breaks = c(1,5,10,50,100,500,1000,1500)) + # setting x axis to log scale and breaks as a numeric vector
   labs(x="Population (Millions) - Log scale ", y = "Number of countries") + #labelling x and y axis
   stat_bin(aes(y=..count.., label=..count..), geom="text", vjust=-0.5)+ # labelling bins wrt frequency on y axis
@@ -211,6 +209,8 @@ library(rworldmap)
 
 #making a worldmap showing TEFP
 
+mapDevice('x11')
+
 globalmap<-joinCountryData2Map(countries,
                             joinCode="NAME", # format of joining country data
                             nameJoinColumn="Country", # column used for joining dataframe to spatial data
@@ -226,6 +226,8 @@ global_tefp<-mapCountryData(mapToPlot=globalmap, nameColumnToPlot="Total.Ecologi
                             mapTitle="Total Ecological Footprint in the world",
                             aspect=1,lwd=0.5) #map aspect and country borders
 
+do.call(addMapLegend,c(global_bcap2,legendLabels="all",legendWidth=0.5))
+
 #making a worldmap showing CFP
 
 global_cfp<-mapCountryData(mapToPlot=globalmap, nameColumnToPlot="Carbon.Footprint",
@@ -236,17 +238,19 @@ global_cfp<-mapCountryData(mapToPlot=globalmap, nameColumnToPlot="Carbon.Footpri
                            mapTitle="Carbon Footprint in the world",
                            aspect=1,lwd=0.5)
 
-
+do.call(addMapLegend,c(global_bcap2,legendLabels="all",legendWidth=0.5))
 ############################################################################################
 #### 2. Relationship between income and ecological footprint ####
 ############################################################################################
 
 library(ggplot2)
+library(RColorBrewer)
 
 #### Income scatterplots ####
 
 # Total Ecological Footprint ~ Income, colour coded by regions
-ggplot(countries, aes(x = GDP.per.Capita, y = Total.Ecological.Footprint, colour = Region1)) + geom_point() +
+ggplot(countries, aes(x = GDP.per.Capita, y = Total.Ecological.Footprint)) + geom_point(aes(colour = Region1)) + 
+  scale_color_brewer(palette="Set1") +
   labs(title = "Relationship between GDP per Capita and Total Ecological Footprint",
        x ="GDP per Capita ($)", y = "Total Ecological Footprint (gha)", colour = "Region")
 
@@ -254,7 +258,10 @@ ggplot(countries, aes(x = GDP.per.Capita, y = Total.Ecological.Footprint, colour
 # below 5 gha and GDP pr. Capita below $1500. Outside of this is most European Union/Efta countries and North America
 # as well as some Middle East/Central Asian countries (most likely oil producing) and Asia-Pacific.
 
-ggplot(countries, aes(x = GDP.per.Capita, y = Biocapacity.Deficit.or.Reserve, colour = Region1)) + geom_point() +
+
+# Biocapacity balance ~ income, colour coded by regions
+ggplot(countries, aes(x = GDP.per.Capita, y = Biocapacity.Deficit.or.Reserve)) + geom_point(aes(colour = Region1)) + 
+  scale_color_brewer(palette="Set1") +
   labs(title = "Relationship between GDP per Capita and the Biocapacity balance",
        x ="GDP per Capita ($)", y = "Biocapacity - Deficit or Reserve (gha)", colour = "Region")
 
@@ -281,7 +288,8 @@ cor(countries$GDP.per.Capita, countries$HDI, use = "complete.obs", method="kenda
 # As expected correlation is high: 0.8075072
 
 # Total Ecological Footprint ~ HDI, colour coded by regions
-ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint, colour = Region1)) + geom_point() +
+ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint)) + geom_point(aes(colour = Region1)) + 
+  scale_color_brewer(palette="Set1") +
   labs(title = "Relationship between Human Development Index and Total Ecological Footprint",
        x ="HDI", y = "Total Ecological Footprint (gha)", colour = "Region")
 
@@ -290,8 +298,10 @@ ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint, colour = Region1)
 # Correspondingly, countries with higher HDI seem to have higher variation in total footprint
 
 # Total Ecological Footprint ~ HDI, different plots for each region
-ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint)) + geom_point() + facet_grid(~Region1)
-
+ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint)) + geom_point(aes(colour = Region1)) + 
+  scale_color_brewer(palette="Set1") + facet_grid(~Region1) +
+  labs(title = "Relationship between Human Development Index and Total Ecological Footprint",
+       x ="HDI", y = "Total Ecological Footprint (gha)", colour = "Region")
 # A different plot showing the regional differences
 
 #######################################################################################
