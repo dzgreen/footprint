@@ -217,18 +217,18 @@ global_cfp<-mapCountryData(mapToPlot=globalmap, nameColumnToPlot="Carbon.Footpri
 ############################################################################################
 
 library(ggplot2)
+library(RColorBrewer)
 
 #### Income scatterplots ####
 
 # Total Ecological Footprint ~ Income, colour coded by regions
-<<<<<<< HEAD
+
 ggplot(countries, aes(x = GDP.per.Capita, y = Total.Ecological.Footprint)) + geom_point(aes(colour = Region1)) + 
   scale_color_brewer(palette="Set1") +
   labs(title = "Relationship between GDP per Capita and Total Ecological Footprint", 
-=======
+
 ggplot(countries, aes(x = GDP.per.Capita, y = Total.Ecological.Footprint, colour = Region1)) + geom_point() +
   labs(title = "Relationship between GDP per Capita and Total Ecological Footprint",
->>>>>>> a7a82cc8af2f9a6302127c8394947397db8eba17
        x ="GDP per Capita ($)", y = "Total Ecological Footprint (gha)", colour = "Region")
 
 # The plot shows a clustering of the majority of countries within the first 'square' of an Total Ecological Footprint
@@ -265,10 +265,9 @@ cor(countries$GDP.per.Capita, countries$HDI, use = "complete.obs", method="kenda
 ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint)) + geom_point(aes(colour = Region1)) + 
   scale_color_brewer(palette="Set1") + 
   labs(title = "Relationship between Human Development Index and Total Ecological Footprint", 
-=======
+
 ggplot(countries, aes(x = HDI, y = Total.Ecological.Footprint, colour = Region1)) + geom_point() +
   labs(title = "Relationship between Human Development Index and Total Ecological Footprint",
->>>>>>> a7a82cc8af2f9a6302127c8394947397db8eba17
        x ="HDI", y = "Total Ecological Footprint (gha)", colour = "Region")
 
 # The plot shows a clear regional clustering in the relationship between HDI and Total Ecological Footprint.
