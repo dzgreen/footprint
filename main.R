@@ -21,14 +21,12 @@
 
 # Tables
   # Countries with the largest and smallest ecological footprint (eg. two tables, 3 columns: rank, country, gha)
-  # Other ideas?
 
-Pie
 
 # Case study
 #### Set working directory and read data ####
 path_to_data <- "/home/dominik/Dropbox/Kandidat/Managing_big/footprint"
-#path_to_data <- "/Users/louisedagmarmadsen/Dropbox/Uni-noter/Kandidat/Sommerskole 2017/Managing and Analysing Cross Sectional and Spatial Data in Social Science/Exam"
+path_to_data <- "/Users/louisedagmarmadsen/Dropbox/Uni-noter/Kandidat/Sommerskole 2017/Managing and Analysing Cross Sectional and Spatial Data in Social Science/Exam"
 path_to_data <- "e:/001gerliterati/Let?lt?sek/Summer course/project/footprint"
 
 setwd(path_to_data)
